@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>angular_form</title>
+    <script src="angular.min.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="container">
+    <div ng-show="showEdit">
+        <button ng-click="toggle()">preview</button>
+        <br>
+        <div ng-repeat="x in data track by $index">
+            {{x}}<input type={{x}}><button ng-click="removeItem($index)">-</button>
+        </div>
+        <button ng-click="showPopup()">add</button>
+        <div ng-show="Popup">
+            <input type="radio" name="type" ng-value='"text"' ng-model="result" /> text <br>
+            <input type="radio" name="type" ng-value='"date"' ng-model="result" /> date <br>
+            <button ng-click="submit(result)">submit</button>
+            <button ng-click="chosePopup()">chose</button>
+        </div>
+    </div>
+    <div ng-show="showPreview">
+        <button ng-click="toggle()">edit</button>
+        <br>
+        <div ng-repeat="x in data track by $index">
+            {{x}}<input type={{x}}>
+        </div>
+        <button>save</button>
+    </div>
+    <script>
+        var app = angular.module('myApp',[]);
+        app.controller('container',function ($scope) {
+            $scope.showEdit = true;
+            $scope.showPreview = false;
+            $scope.Popup = false;
+            $scope.data =["text","date","text","date"];
+            $scope.submit = function (result) {
+                $scope.data.push(result);
+                $scope.chosePopup();
+            };
+            $scope.toggle = function () {
+                $scope.showEdit = !$scope.showEdit;
+                $scope.showPreview = !$scope.showPreview;
+            };
+            $scope.chosePopup = function () {
+                $scope.Popup = false;
+            };
+            $scope.showPopup = function () {
+                $scope.Popup = true;
+            };
+            $scope.removeItem = function (index) {
+                var newData = [];
+                for (var i = 0; i < $scope.data.length; i++){
+                    if (i != index){
+                        newData.push($scope.data[i])
+                    }
+                }
+                $scope.data = newData;
+            }
+        });
+    </script>
+</body>
+</html>
